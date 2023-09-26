@@ -19,11 +19,11 @@ single connection across multiple destinations.
 ## Implementation
 
 * The proxy will start up N worker `connections` to each `target`.
-* The proxy will read data from the incoming connection into a 16KB buffer.
+* The proxy will read data from the incoming connection into a 16KiB buffer.
 * The buffer will be split cleanly on a newline boundary, or combined with additional data until at least one newline is seen.
 * The buffer containing one or more lines is places onto a channel and will be pulled by a worker and transmitted to a target.
 * If any of the worker connections fail, it will attempt to connect to a random target instead.
-* Every 5 minutes it will attempt to reconnect to its original target.
+* Every 5 minutes it will reconnect (and to its original target if it failed over to a random target previously).
 
 ## Usage
 
@@ -36,6 +36,8 @@ single connection across multiple destinations.
             Address to proxy to. separate multiple with comma (default "127.0.0.1:9999")
       -connections int
             Number of outbound connections to make to each target (default 4)
+      -debug true
+            Enable debug logging and listen to pprof on :8080
 
 ## Container Usage
 
