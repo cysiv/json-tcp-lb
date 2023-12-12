@@ -1,7 +1,7 @@
 steps:
   - name: "gcr.io/cloud-builders/docker"
     entrypoint: "bash"
-    args: ["/workspace/cloud-build-triggers/docker-build.sh"]
+    args: ["/workspace/docker-build.sh"]
     env:
       [
         "PROJECTS=$PROJECT_ID $_PUBLIC_PROJECT",
