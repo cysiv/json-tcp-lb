@@ -1,13 +1,14 @@
 FROM golang:latest as builder
 
 WORKDIR /src/json-tcp-lb
-COPY go.mod ./
-#noexternal deps yet
-#RUN go mod download
+COPY go.mod go.sum ./
+
+RUN go mod download
+# go get github.com/rs/zerolog && go get github.com/rs/zerolog/log && go mod download
 
 COPY *.go ./
 
-RUN go test ./...
+RUN go test ./
 RUN CGO_ENABLED=0 go build -ldflags="-w -s" -o  /usr/bin/json-tcp-lb
 
 ####

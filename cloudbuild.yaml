@@ -1,0 +1,26 @@
+steps:
+  - name: "gcr.io/cloud-builders/docker"
+    entrypoint: "bash"
+    args: ["/workspace/docker-build.sh"]
+    env:
+      [
+        "PROJECTS=$PROJECT_ID $_PUBLIC_PROJECT",
+        "IMAGES=$_IMAGE",
+        "SHORT_SHA=$SHORT_SHA",
+        "BRANCH_NAME=$BRANCH_NAME",
+        "DOCKER_DIR=.",
+      ]
+    dir: "${_DIR}"
+
+substitutions:
+  _PUBLIC_PROJECT: "serapis-public-images"
+  _IMAGE: "json-tcp-lb"
+  _DIR: "."
+
+timeout: 1800s
+
+logsBucket: gs://${PROJECT_ID}_cloudbuild/logs
+
+images:
+  - "gcr.io/${PROJECT_ID}/${_IMAGE}"
+  - "gcr.io/${_PUBLIC_PROJECT}/${_IMAGE}"
